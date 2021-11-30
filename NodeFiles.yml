@@ -11,3 +11,7 @@ node_files:
   - node_name: 3
     node_files:
       - "file6"
+  - node_name: 4
+    node_files:
+      - "file7"
+      - "file8"

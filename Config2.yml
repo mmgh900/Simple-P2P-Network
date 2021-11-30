@@ -1,7 +1,7 @@
 node_number: 2
 node_port: 8081
-owned_files_dir: "Node1/ownedFiles/"
-new_files_dir: "Node1/newFiles/"
+owned_files_dir: "./ownedFiles/"
+new_files_dir: "./newFiles2/"
 owned_files:
   - "file4"
   - "file5"

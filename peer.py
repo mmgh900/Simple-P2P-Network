@@ -1,15 +1,9 @@
 import requests
-import yaml
-from types import SimpleNamespace
+from essential_generators import DocumentGenerator
 
+gen = DocumentGenerator()
 
-url = 'http://localhost:8080'
-
-
-resp = requests.get(url=url)
-data = resp.json() # Check the JSON Response Content documentation below
-
-file = open("output_file.yaml", "w")
-yaml.dump(resp.json(), file)
-file.close()
-
+for i in range(1, 30):
+    with open(f'./ownedFiles/file{i}', 'w') as file:
+        file.write(f'*** FILE NUMBER {i} ***\n')
+        file.write(gen.sentence())

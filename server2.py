@@ -55,7 +55,7 @@ def getPort(node_name):
 
 
 def request():
-    print(getTheFile( input('Which file do you want?')))
+    print(getTheFile('file6'))
 
 def runServer():
     run(host='localhost', port=config['node_port'])
