@@ -40,6 +40,7 @@ def findTheAddress(node_name, visited):
         friend_port = friend['node_port']
         if friend_name not in visited:
             url = f'http://localhost:{friend_port}/get_port/{node_name}'
+            # also send the visited
             resp = requests.get(url=url)
             data = resp.json()  # Check the JSON Response Content documentation below
             if data['node_port'] != 0:
