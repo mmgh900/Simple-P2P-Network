@@ -35,14 +35,18 @@ def findTheAddress(node_name, visited):
         return config['node_port']
 
     port = 0
+	#send request for all of its children to find the port
     for friend in config['friend_nodes']:
         friend_name = friend['node_name']
         friend_port = friend['node_port']
         if friend_name not in visited:
+		
             url = f'http://localhost:{friend_port}/get_port/{node_name}'
             # also send the visited
+		
             resp = requests.get(url=url)
             data = resp.json()  # Check the JSON Response Content documentation below
+		# if the return port is 0 then node_name didn't find
             if data['node_port'] != 0:
                 port = data['node_port']
 
