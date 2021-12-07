@@ -1,0 +1,10 @@
+friend_nodes:
+- node_name: 3
+  node_port: 8082
+new_files_dir: ./newFiles2/
+node_number: 2
+node_port: 8081
+owned_files:
+- file4
+- file5
+owned_files_dir: ./ownedFiles/

@@ -1,0 +1,18 @@
+node_files:
+- node_files:
+  - file1
+  - file2
+  - file3
+  node_name: 1
+- node_files:
+  - file4
+  - file5
+  node_name: 2
+- node_files:
+  - file6
+  - file1
+  node_name: 3
+- node_files:
+  - file7
+  - file8
+  node_name: 4
