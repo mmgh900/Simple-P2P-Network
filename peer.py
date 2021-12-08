@@ -1,9 +1,8 @@
-import requests
-from essential_generators import DocumentGenerator
+from bottle import route, run, response, static_file
 
-gen = DocumentGenerator()
+@route('/')
+def getPort():
+    return 'hi'
 
-for i in range(1, 30):
-    with open(f'./ownedFiles/file{i}', 'w') as file:
-        file.write(f'*** FILE NUMBER {i} ***\n')
-        file.write(gen.sentence())
+
+run(host='192.168.43.249', port=80)

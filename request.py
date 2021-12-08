@@ -71,7 +71,7 @@ def getTheFile(file_name):
 @route('/get_port/<node_name>')
 def getPort(node_name):
     response.content_type = 'application/json'
-    return dumps({"node_name": node_name, "node_port": findTheAddress(node_name)})
+    return dumps({"node_name": node_name, "node_port": findTheAddress(node_name), 'visited_nodes': []})
 
 @route('/get_file/<file_name>')
 def getFile(file_name):
