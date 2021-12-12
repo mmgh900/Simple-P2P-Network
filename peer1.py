@@ -43,8 +43,8 @@ def findTheAddress(node_name, visited):
 		
             url = f'http://localhost:{friend_port}/get_port/{node_name}'
             # also send the visited
-		
-            resp = requests.get(url=url)
+            body = {'visited': visited}
+            resp = requests.post(url=url, json=visited)
             data = resp.json()  # Check the JSON Response Content documentation below
 		# if the return port is 0 then node_name didn't find
             if data['node_port'] != 0:
@@ -102,8 +102,9 @@ def getTheFile(file_name):
 
 
 @route('/get_port/<node_name>')
-def getPort(node_name, visited_node):
+def getPort(node_name):
     response.content_type = 'application/json'
+    visited_node = response.body.read() # Todo: check if this works
     return dumps({"node_name": node_name,
                   "node_port": findTheAddress(node_name, visited_node)})
 
