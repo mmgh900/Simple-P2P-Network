@@ -1,4 +1,4 @@
-from bottle import route, run, response, static_file
+from bottle import route, run, response, static_file, request
 from json import dumps
 import yaml
 from multiprocessing import Process
@@ -29,22 +29,29 @@ def whereIsTheFile(file_name):
             return node_name
 
 
-def findTheAddress(node_name):
+def findTheAddress(node_name, visited):
+    visited.append(peer_number)
+    node_name = int(node_name)
+    if node_name == peer_number:
+        return config['node_port']
+
+    port = 0
+    # send request for all of its children to find the port
     for friend in config['friend_nodes']:
         friend_name = friend['node_name']
         friend_port = friend['node_port']
-        if str(node_name) == str(friend_name):
-            return friend_port
+        if friend_name not in visited:
 
+            url = f'http://localhost:{friend_port}/get_port/{node_name}'
+            # also send the visited
+            body = {'visited': visited}
+            resp = requests.post(url=url, json=body)
+            data = resp.json()  # Check the JSON Response Content documentation below
+            # if the return port is 0 then node_name didn't find
+            if data['node_port'] != 0:
+                port = data['node_port']
 
-
-    nearest_node = int(config['node_number'] + 1 % number_of_peers)
-    nearest_node_address = findTheAddress(nearest_node)
-
-    url = f'http://localhost:{nearest_node_address}/get_port/{node_name}'
-    resp = requests.get(url=url)
-    data = resp.json()  # Check the JSON Response Content documentation below
-    return data['node_port']
+    return port
 
 
 def getTheFile(file_name):
@@ -56,7 +63,8 @@ def getTheFile(file_name):
         print('We have the file already')
         return
 
-    address = findTheAddress(owner)
+    visited = []
+    address = findTheAddress(owner, visited)
     url = f'http://localhost:{address}/get_file/{file_name}'
     resp = requests.get(url=url)
     Path(out_put_folder).mkdir(parents=True, exist_ok=True)
@@ -84,12 +92,13 @@ def getTheFile(file_name):
     print(f"{file_name} succesfully downloaded into {config['new_files_dir']}")
 
 
-
-
-@route('/get_port/<node_name>')
+@route('/get_port/<node_name>', method='POST')
 def getPort(node_name):
     response.content_type = 'application/json'
-    return dumps({"node_name": node_name, "node_port": findTheAddress(node_name)})
+    visited_node = request.json
+    return dumps({"node_name": node_name,
+                  "node_port": findTheAddress(node_name, visited_node['visited'])})
+
 
 @route('/get_file/<file_name>')
 def getFile(file_name):
@@ -115,12 +124,14 @@ def command():
         else:
             print("wrong command")
 
+
 if __name__ == '__main__':
 
     port = config['node_port']
     if is_port_in_use(port):
-            print(f'Your are already listening on port {port}...')
+        print(f'Your are already listening on port {port}...')
     else:
         go_run_server = threading.Thread(target=runServer)
         go_run_server.start()
         command()
+

@@ -10,7 +10,6 @@ node_files:
   node_name: 2
 - node_files:
   - file6
-  - file1
   node_name: 3
 - node_files:
   - file7
