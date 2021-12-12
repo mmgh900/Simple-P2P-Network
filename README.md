@@ -11,7 +11,9 @@ python peer3.py
 python peer4.py
 ```
 and then you can download a file in your directory by typing the command 
-`request file3`
+```
+request file3
+```
 
 for more detail check the configfile of each node 
 in the config file you will see the port of the node
